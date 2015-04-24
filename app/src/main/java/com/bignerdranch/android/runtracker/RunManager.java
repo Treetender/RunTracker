@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.location.Location;
 
 /**
  * Created by treetender on 4/20/15.
@@ -40,10 +41,22 @@ public class RunManager {
 
     public void startLocationUpdates() {
         String provider = LocationManager.GPS_PROVIDER;
+        
+        Location last = mLocationManager.getLastKnownLocation(provider);
+        if(last != null) {
+            last.setTime(System.currentTimeMillis());
+            broadcastLocation(last);
+        }
 
         //Start updates from the location manager
         PendingIntent pi = getLocationPendingIntent(true);
         mLocationManager.requestLocationUpdates(provider, 0, 0, pi);
+    }
+    
+    private void broadcastLocation( Location location) { 
+        Intent broadcast = new Intent(ACTION_LOCATION); 
+        broadcast.putExtra(LocationManager.KEY_LOCATION_CHANGED, location); 
+        mAppContext.sendBroadcast(broadcast); 
     }
 
     public void stopLocationUpdates() {
