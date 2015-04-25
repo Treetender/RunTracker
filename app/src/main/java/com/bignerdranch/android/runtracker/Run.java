@@ -7,11 +7,14 @@ import java.util.Date;
  */
 public class Run {
     private Date mStartDate;
+    private long mId;
 
     public Run() {
         mStartDate = new Date();
+        mId = -1;
     }
 
+    public long getId() { return mId; }
     public Date getStartDate() {
         return mStartDate;
     }
@@ -19,6 +22,7 @@ public class Run {
     public void setStartDate(Date startDate) {
         mStartDate = startDate;
     }
+    public void setId(long id) { mId = id; }
 
     public int getDurationSeconds(long endMillis) {
         return (int)((endMillis - mStartDate.getTime()) / 1000);
